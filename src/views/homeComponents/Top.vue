@@ -1,157 +1,203 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <el-header class="navbar">
-    <div class="navbar-container">
-      <!-- Logo部分 -->
-      <div class="navbar-brand">
-        <img src="@/assets/new-logo.png" alt="Joinku" class="logo" />
+  <div class="banner-top-div">
+      <div class="top">
+          <div class="container">
+              <!-- Logo -->
+              <img src="@/assets/joinkuImages/top-1.png" alt="Fast Simple Logo" />
+
+              <!-- Navigation Menu -->
+              <div class="nav-menu">
+                  <el-menu mode="horizontal" :ellipsis="false" class="menu">
+                      <el-menu-item index="1" @click="goToPage('home')">{{$t('navigation.home')}}</el-menu-item>
+                      <el-menu-item index="2" @click="goToPage('shopping')">{{$t('navigation.shop')}}</el-menu-item>
+                      <!-- <el-menu-item index="3" @click="goToPage('news')">{{$t('navigation.news')}}</el-menu-item> -->
+                      <el-menu-item index="4" @click="goToPage('server')">{{$t('navigation.support')}}</el-menu-item>
+                      <el-menu-item index="5" @click="goToPage('about')">{{$t('navigation.about')}}</el-menu-item>
+                      <el-menu-item index="6" @click="goToPage('contact')">{{$t('navigation.contact')}}</el-menu-item>
+                      <el-menu-item index="7">
+                          <el-dropdown @command="handleCommand" trigger="click">
+                              <span class="language-selector">
+                                  {{ languageList.find(iv=>iv.code === commonStore.language)?.label }}
+                                   <el-icon>
+                                      <ArrowDown />
+                                  </el-icon>
+                              </span>
+                              <template #dropdown>
+                                  <el-dropdown-menu>
+                                      <el-dropdown-item v-for="(item, index) in languageList"
+                                          :command="item.code" :key="index">{{ item.label }}</el-dropdown-item>
+                                  </el-dropdown-menu>
+                              </template>
+                          </el-dropdown>
+                      </el-menu-item>
+                  </el-menu>
+              </div>
+              <div class="right-section">
+                  <el-button v-if="!userStore.token" class="login-btn" type="pain" @click="login">{{$t('user.loginText')}}</el-button>
+                  <el-button v-if="!userStore.token" class="register-btn" type="pain" @click="login">{{$t('user.registerText')}}</el-button>
+                  <div v-else>
+                      <el-dropdown trigger="click">
+                          <span class="language-selector">
+                              <img src="@/assets/fastsImages/user.png" alt="">
+                              <el-tooltip
+                                  class="box-item"
+                                  effect="dark"
+                                  :content="userStore.userInfo.username"
+                                  placement="top-start"
+                              >
+                               <div>
+                                
+                              {{ `${(userStore.userInfo.username).substring(0,3)}...` }} 
+                               </div>
+                              </el-tooltip>
+                                <!-- 18376614866 -->
+                              <el-icon>
+                                  <ArrowDown />
+                              </el-icon>
+                          </span>
+                          <template #dropdown>
+                              <el-dropdown-menu>
+                                  <el-dropdown-item @click="toMyOrder">{{$t('user.myOrders')}}</el-dropdown-item>
+                                  <el-dropdown-item @click="loginOut">{{$t('user.logout')}}</el-dropdown-item>
+                              </el-dropdown-menu>
+                          </template>
+                      </el-dropdown>
+                  </div>
+              </div>
+          </div>
       </div>
-
-      <!-- 主导航链接 -->
-      <el-menu
-        :default-active="activeIndex"
-        class="navbar-menu"
-        mode="horizontal"
-        :ellipsis="false"
-        @select="handleSelect"
-      >
-        <el-menu-item index="/">主页</el-menu-item>
-        <el-menu-item index="/mall">商城</el-menu-item>
-        <el-menu-item index="/service">服务支持</el-menu-item>
-        <el-menu-item index="/about">关于我们</el-menu-item>
-        <el-menu-item index="/contact">联系我们</el-menu-item>
-      </el-menu>
-
-      <!-- 右侧操作区 -->
-      <div class="navbar-end">
-        <!-- 语言选择器 -->
-        <el-select
-          v-model="currentLanguage"
-          class="language-selector"
-          size="small"
-          @change="changeLanguage"
-        >
-          <el-option label="中文" value="zh" />
-          <el-option label="English" value="en" />
-        </el-select>
-
-        <!-- 用户操作按钮 -->
-        <div class="auth-buttons">
-          <el-button type="primary" plain size="default">登录</el-button>
-          <el-button type="primary" size="default">注册</el-button>
-        </div>
-      </div>
-    </div>
-  </el-header>
+      <LoginModalView ref="loginModalViewRef"/>
+  </div>
 </template>
-
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-defineOptions({
-  name: 'topView'
-})
-const route = useRoute()
+import LoginModalView from '@/views/LoginModalView.vue'
+import {languageList} from "@/http/config"
+import { useRouter } from 'vue-router'
+import { ArrowDown } from '@element-plus/icons-vue'
+import { useUserStore } from '@/stores/modules/user'
+import {useCommonStore} from "@/stores/modules/common"
+import { useShoppingCartStore } from "@/stores/modules/shoppingCart"
+const current = getCurrentInstance()?.appContext.config.globalProperties as any;
+// 获取路由实例
 const router = useRouter()
-
-const currentLanguage = ref('zh')
-const activeIndex = computed(() => route.path)
-
-const handleSelect = (key: any) => {
-  router.push(key)
+const userStore = useUserStore()
+const commonStore = useCommonStore()
+const shoppingCartStore = useShoppingCartStore()
+const loginModalViewRef = ref<InstanceType<typeof LoginModalView>>()
+const handleCommand = (command: string) => {
+  current.$i18n.locale = command
+  commonStore.setLanguageFn(command)
 }
-
-const changeLanguage = () => {
-  console.log('Language changed to:', currentLanguage.value)
+// 跳转到首页的方法
+const goToPage = (value: any) => {
+  router.push(`/${value}`)
 }
+const login = () => {
+  loginModalViewRef.value?.showLoginModal()
+  // router.push(`/module/login`)
+}
+const loginOut = () => {
+  userStore.resetToken()
+  userStore.resetUserInfo()
+  shoppingCartStore.resetCart()
+  shoppingCartStore.resetOrderId()
+  router.push(`/module/login`)
+}
+const toMyOrder = ()=> {
+  commonStore.setShowOrderListView(true)
+}
+onMounted(() => {
+  console.log(userStore.userInfo)
+})
 </script>
-
-<style scoped>
-.navbar {
-  width: 100%;
-  height: 64px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+<style scoped lang="less">
+.banner-top-div {
   position: fixed;
   top: 0;
-  left: 0;
-  z-index: 1000;
-  padding: 0;
-}
+  width: 100%;
+  z-index: 3;
+  background-color: #fff;
+  color: #000;
+  border-bottom: 1px solid #000;
+  .top {
+      height: 90px;
+      width: 1280px;
+      margin: auto;
 
-.navbar-container {
-  max-width: 1200px;
-  height: 100%;
-  margin: 0 auto;
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
 
-.navbar-brand {
-  display: flex;
-  align-items: center;
-}
+      .container {
+          width: 100%;
+          height: 100%;
+          margin: 0 auto;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          //   padding: 0 120px;
+          box-sizing: border-box;
 
-.logo {
-  height: 36px;
-  width: auto;
-}
+          >img {
+              width: 187.6px;
+              height: 36px;
+          }
 
-:deep(.navbar-menu) {
-  border: none;
-  margin-left: 40px;
-  background-color: transparent;
-}
+          .nav-menu {
+              flex: 1;
+              display: flex;
+              justify-content: center;
 
-:deep(.el-menu--horizontal > .el-menu-item) {
-  height: 64px;
-  line-height: 64px;
-  font-size: 16px;
-  padding: 0 16px;
-  color: #333333;
-}
+              :deep(.menu) {
+                  background-color: transparent;
+                  border: none;
 
-:deep(.el-menu--horizontal > .el-menu-item.is-active) {
-  color: var(--el-color-primary);
-  border-bottom: 2px solid var(--el-color-primary);
-}
+                  .el-menu-item {
+                      color: #1E1E1E;
+                      font-size: 16px;
+                      padding: 0 30px;
 
-.navbar-end {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
+                      &:hover,
+                      &.is-active {
+                          color: #409eff;
+                          background-color: transparent;
+                      }
+                  }
+              }
+          }
 
-.language-selector {
-  width: 100px;
-}
+          .right-section {
+              display: flex;
+              align-items: center;
+              gap: 20px;
 
-.auth-buttons {
-  display: flex;
-  gap: 12px;
-}
+              .language-selector {
+                  color: #000;
+                  cursor: pointer;
+                  display: flex;
+                  align-items: center;
+                  gap: 4px;
 
-:deep(.el-button) {
-  padding: 8px 20px;
-  font-weight: 500;
-}
+                  img {
+                      width: 20px;
+                      height: 20px;
+                  }
+              }
 
-@media screen and (max-width: 768px) {
-  .navbar-container {
-    padding: 0 10px;
-  }
-
-  :deep(.navbar-menu) {
-    display: none;
-  }
-
-  .language-selector {
-    width: 80px;
-  }
-
-  .auth-buttons {
-    gap: 8px;
+              .login-btn {
+                  height: 40px;
+                  padding: 0 24px;
+                  border-radius: 20px;
+                  background-color: #6A8C69 !important;
+                  color: #ffffff;
+              }
+              .register-btn{
+                  height: 40px;
+                  padding: 0 24px;
+                  border-radius: 20px;
+                  background-color: #fff !important;
+                  color: #1E1E1E;
+              }
+          }
+      }
   }
 }
 </style>

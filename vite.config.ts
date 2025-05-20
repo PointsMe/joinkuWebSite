@@ -14,7 +14,7 @@ export default defineConfig({
     // 是否监听所有地址
     host: true,
     // 端口号
-    port: 3333,
+    port: 4444,
     // 端口被占用时，是否直接退出
     strictPort: false,
     // 是否自动打开浏览器

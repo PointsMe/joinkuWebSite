@@ -14,7 +14,7 @@ export default [
           // route level code-splitting
           // this generates a separate chunk (About.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
-          component: () => import('../views/IndexView.vue'),
+          component: () => import('../views/HomeView.vue'),
           meta: {
             name: '主页'
           }

@@ -38,7 +38,7 @@ const changeRegisterStyle = (value: string) => {
     }
 
     .chooseed {
-        color: #fed15f;
+        color: #387533;
     }
 
     .step-2 {
@@ -64,7 +64,7 @@ const changeRegisterStyle = (value: string) => {
                 height: 1px;
                 left: 50%;
                 transform: translateX(-50%);
-                background-color: #fed15f;
+                background-color: #387533;
             }
         }
 
@@ -79,7 +79,7 @@ const changeRegisterStyle = (value: string) => {
                 height: 1px;
                 left: 50%;
                 transform: translateX(-50%);
-                background-color: #fed15f;
+                background-color: #387533;
             }
         }
     }

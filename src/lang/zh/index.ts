@@ -2,7 +2,7 @@ export default {
     aboutLogin:{
         previousStep: '上一步',
         back: '返回',
-        loginText: '登录',
+        loginText: '立即登录',
         noAccout: '没有账号？',
         goRegister:'去注册',
         telLogin:'手机号登录',
@@ -65,7 +65,9 @@ export default {
 user: {
     loginRegister: '登录/注册',
     myOrders: '我的订单',
-    logout: '退出登录'
+    logout: '退出登录',
+    loginText: '登录',
+    registerText: '注册'
 },
 bannerOne: {
     featuredPackages: '精选套餐',

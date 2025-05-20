@@ -72,8 +72,8 @@ defineExpose({
       font-family: DIN, DIN;
       // font-family: Source Han Sans SC;
       font-weight: 500;
-      font-size: 32px;
-      color: #ffffff;
+      font-size: 28px;
+      color: #1B1B1B;
     }
 
     .left-title-i {
@@ -146,7 +146,7 @@ defineExpose({
         bottom: 0;
 
         span {
-          color: #fed15f;
+          color: #387533;
         }
       }
     }

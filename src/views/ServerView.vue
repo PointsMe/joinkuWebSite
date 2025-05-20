@@ -84,7 +84,7 @@ const commonStore = useCommonStore()
       }
 
       .flex1-g {
-        background: #fed15f;
+        background: #F6F6F4;
         color: #111111;
         margin-left: 10px;
       }
@@ -127,7 +127,7 @@ const commonStore = useCommonStore()
             font-family: DIN, DIN;
             font-weight: bold;
             font-size: 80px;
-            color: #fdb522;
+            color: #6A8C69;
 
             > span {
               color: #1a1a1a;

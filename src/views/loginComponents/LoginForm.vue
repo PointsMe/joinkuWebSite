@@ -52,11 +52,11 @@
                             </el-checkbox>
                         </div>
                     </el-col>
-                    <el-col :span="24">
+                    <!-- <el-col :span="24">
                         <div class="chin-select">
                             <LanguageView />
                         </div>
-                    </el-col>
+                    </el-col> -->
                 </el-row>
             </div>
         </div>
@@ -234,10 +234,11 @@ const forgetPass = ()=>{
                 Source Han Sans SC;
             font-weight: 400;
             font-size: 16px;
-            color: #1a1a1a;
+            color: #fff;
 
             .el-btn-color {
-                // background-color: #1A1A1A;
+                background-color: #1B1B1B;
+                color: #fff;
             }
         }
     }

@@ -10,9 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import BannerTop from '@/views/indexComponents/BannerTop.vue'
-import BannerTen from '@/views/indexComponents/BannerTen.vue'
-import BannerEleven from '@/views/indexComponents/BannerEleven.vue'
+import BannerTop from '@/views/homeComponents/Top.vue'
+import BannerTen from '@/views/homeComponents/BannerTen.vue'
+import BannerEleven from '@/views/homeComponents/BannerEleven.vue'
 import OrderView from './orderView.vue'
 import OrderDetailView from './OrderDetailView.vue'
 defineOptions({
